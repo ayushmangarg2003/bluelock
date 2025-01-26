@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
+import React, { useState } from "react";
+import axios from "axios";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Loader2, UserCircle2 } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function Home() {
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -16,58 +18,44 @@ export default function Home() {
     setResult(null);
 
     try {
-      const response = await fetch('https://app.wordware.ai/api/released-app/c1950e07-b9d5-408d-9ddb-32c37e7f564f/run', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ww-Jv7KCtylsgEtNjj4ecDdU7nSVfVxmgDO38k1Ez42DlVAOFpJWDkUqr`
-        },
-        body: JSON.stringify({
-          inputs: {
-            "Twitter Handle": username
-          },
-          version: "^1.0"
-        })
-      });
-
-      // Log full response for debugging
-      console.log('Response status:', response.status);
-      console.log('Response headers:', Object.fromEntries(response.headers));
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Error response:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-      }
-
-      const data = await response.json();
-      setResult(data);
+      const response = await axios.post("/api/match-character", { username });
+      console.log("DATA",response.data);
+      
+      setResult(response.data);
     } catch (err) {
-      console.error('Fetch error:', err);
-      setError(err.message);
+      setError(err.response?.data?.message || err.message || "Unknown error");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Which Blue Lock Character Are You?</CardTitle>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100">
+      <Card className="w-full max-w-md shadow-2xl border-2 border-blue-200">
+        <CardHeader className="text-center bg-blue-500 text-white py-6">
+          <div className="flex justify-center mb-4">
+            <UserCircle2 size={64} />
+          </div>
+          <CardTitle className="text-2xl font-bold">
+            Which Blue Lock Character Are You?
+          </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           <div className="space-y-4">
-            <Input 
-              placeholder="Enter Twitter Username" 
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full"
-            />
-            <Button 
-              onClick={matchCharacter} 
+            <div className="flex items-center border-b-2 border-blue-300 pb-2">
+              {/* <Twitter className="mr-3 text-blue-500" /> */}
+              <Input
+                placeholder="Enter Twitter Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="border-none focus:outline-none"
+              />
+            </div>
+
+            <Button
+              onClick={matchCharacter}
               disabled={!username || loading}
-              className="w-full"
+              className="w-full bg-blue-600 hover:bg-blue-700 transition-colors"
             >
               {loading ? (
                 <>
@@ -75,19 +63,19 @@ export default function Home() {
                   Analyzing...
                 </>
               ) : (
-                'Find My Character'
+                "Find My Character"
               )}
             </Button>
 
             {error && (
-              <div className="text-red-500 text-center">
-                Error: {error}
-              </div>
+              <Alert variant="destructive">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
             )}
 
             {result && (
-              <div className="text-center mt-4">
-                <p className="text-lg">{result}</p>
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <p className="text-lg text-blue-800">{result}</p>
               </div>
             )}
           </div>

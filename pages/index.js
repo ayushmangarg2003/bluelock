@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function Home() {
   const [username, setUsername] = useState("");
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -19,9 +19,7 @@ export default function Home() {
 
     try {
       const response = await axios.post("/api/match-character", { username });
-      console.log("DATA",response.data);
-      
-      setResult(response.data);
+      setResult(JSON.parse(response.data.result));
     } catch (err) {
       setError(err.response?.data?.message || err.message || "Unknown error");
     } finally {
@@ -75,7 +73,9 @@ export default function Home() {
 
             {result && (
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                <p className="text-lg text-blue-800">{result}</p>
+                <p className="text-lg text-blue-800">{result.name}</p>
+                <p className="text-lg text-blue-800">{result.character}</p>
+                <p className="text-lg text-blue-800">{result.explanation}</p>
               </div>
             )}
           </div>

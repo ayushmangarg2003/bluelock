@@ -39,12 +39,12 @@ export default function BlueLockCharacterMatcher() {
       >
         <div className="backdrop-blur-xl bg-black/60 p-4 md:p-8 rounded-2xl border border-blue-900/50 shadow-2xl space-y-8">
           <div className="flex justify-center items-center space-x-4">
-            <TwitterIcon className="text-blue-500 w-12 h-12" />
+            <TwitterIcon className="text-blue-500 w-8 h-8" />
             <Sparkles className="text-yellow-400 w-8 h-8 animate-pulse" />
-            <UserCheck className="text-green-500 w-12 h-12" />
+            <UserCheck className="text-green-500 w-8 h-8" />
           </div>
 
-          <h1 className="text-4xl font-bold text-center tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+          <h1 className="text-3xl font-bold text-center tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
             Blue Lock Character Matcher
           </h1>
 
@@ -60,7 +60,7 @@ export default function BlueLockCharacterMatcher() {
             </div>
 
             <motion.button
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.95 }}
               onClick={matchCharacter}
               disabled={!username || loading}

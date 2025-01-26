@@ -25,19 +25,19 @@ export default function BlueLockCharacterMatcher() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-blue-900 to-black text-white font-['Inter',_sans-serif] relative overflow-hidden">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black via-blue-900 to-black text-white font-['Inter',_sans-serif] relative overflow-hidden p-4">
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(30,64,175,0.2)_0%,transparent_70%)]"></div>
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:30px_30px] opacity-50"></div>
       </div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="relative z-10 flex items-center justify-center min-h-screen px-4"
+        className={`relative z-10 w-full ${result ? "max-w-5xl" : "max-w-md"}`}
       >
-        <div className="w-full max-w-md space-y-8 backdrop-blur-xl bg-black/60 p-8 rounded-2xl border border-blue-900/50 shadow-2xl">
+        <div className="backdrop-blur-xl bg-black/60 p-4 md:p-8 rounded-2xl border border-blue-900/50 shadow-2xl space-y-8">
           <div className="flex justify-center items-center space-x-4">
             <TwitterIcon className="text-blue-500 w-12 h-12" />
             <Sparkles className="text-yellow-400 w-8 h-8 animate-pulse" />
@@ -57,7 +57,6 @@ export default function BlueLockCharacterMatcher() {
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full bg-blue-900/30 border border-blue-700/50 text-white px-5 py-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 ease-in-out"
               />
-              <Star className="absolute right-4 top-1/2 -translate-y-1/2 text-yellow-400 opacity-50" />
             </div>
 
             <motion.button
@@ -78,7 +77,7 @@ export default function BlueLockCharacterMatcher() {
             </motion.button>
 
             {error && (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="bg-red-500/20 border border-red-500 text-red-300 p-4 rounded-xl text-center"
@@ -88,10 +87,10 @@ export default function BlueLockCharacterMatcher() {
             )}
 
             {result && (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-blue-900/30 border border-blue-700/50 p-6 rounded-xl space-y-4"
+                className="bg-blue-900/30 border border-blue-700/50 p-4 md:p-6 rounded-xl space-y-4"
               >
                 <h3 className="text-2xl font-bold text-blue-400 flex items-center space-x-2">
                   <Star className="text-yellow-400" />
@@ -101,17 +100,21 @@ export default function BlueLockCharacterMatcher() {
                   <p className="flex items-center space-x-2">
                     <UserCheck className="text-green-500" />
                     <span className="text-zinc-300">Username:</span>
-                    <span className="font-semibold text-white">{result.name}</span>
+                    <span className="font-semibold text-white">
+                      {result.name}
+                    </span>
                   </p>
                   <p className="flex items-center space-x-2">
                     <Sparkles className="text-purple-500" />
                     <span className="text-zinc-300">Blue Lock Character:</span>
-                    <span className="font-semibold text-white">{result.character}</span>
+                    <span className="font-semibold text-white">
+                      {result.character}
+                    </span>
                   </p>
                 </div>
                 <div>
                   <p className="text-zinc-300 mb-2">Why {result.character}?</p>
-                  <p className="text-zinc-400 italic bg-blue-900/50 p-3 rounded-lg">
+                  <p className="text-zinc-300 italic bg-blue-900/50 p-3 rounded-lg">
                     {result.explanation}
                   </p>
                 </div>

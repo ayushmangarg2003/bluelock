@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { TwitterIcon, Loader2 } from "lucide-react";
+import { TwitterIcon, Loader2, Star, Sparkles, UserCheck } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function BlueLockCharacterMatcher() {
   const [username, setUsername] = useState("");
@@ -24,66 +25,101 @@ export default function BlueLockCharacterMatcher() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white font-['Inter',_sans-serif] relative overflow-hidden">
-      {/* Gridded Background */}
+    <div className="min-h-screen bg-gradient-to-br from-black via-blue-900 to-black text-white font-['Inter',_sans-serif] relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:30px_30px]"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(30,64,175,0.2)_0%,transparent_70%)]"></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:30px_30px] opacity-50"></div>
       </div>
 
-      <div className="relative z-10 flex items-center justify-center min-h-screen px-4">
-        <div className="w-full max-w-md space-y-6">
-          <div className="flex justify-center">
-            <TwitterIcon className="text-white w-16 h-16" />
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="relative z-10 flex items-center justify-center min-h-screen px-4"
+      >
+        <div className="w-full max-w-md space-y-8 backdrop-blur-xl bg-black/60 p-8 rounded-2xl border border-blue-900/50 shadow-2xl">
+          <div className="flex justify-center items-center space-x-4">
+            <TwitterIcon className="text-blue-500 w-12 h-12" />
+            <Sparkles className="text-yellow-400 w-8 h-8 animate-pulse" />
+            <UserCheck className="text-green-500 w-12 h-12" />
           </div>
 
-          <h1 className="text-3xl font-bold text-center tracking-tight">
+          <h1 className="text-4xl font-bold text-center tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
             Blue Lock Character Matcher
           </h1>
 
-          <div className="space-y-4">
-            <input
-              type="text"
-              placeholder="Enter Twitter Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full bg-transparent border border-zinc-700 text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+          <div className="space-y-5">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Enter Twitter Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full bg-blue-900/30 border border-blue-700/50 text-white px-5 py-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 ease-in-out"
+              />
+              <Star className="absolute right-4 top-1/2 -translate-y-1/2 text-yellow-400 opacity-50" />
+            </div>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={matchCharacter}
               disabled={!username || loading}
-              className="w-full bg-white text-black py-3 rounded-full font-bold hover:bg-zinc-200 transition-colors duration-300 disabled:opacity-50"
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-4 rounded-full font-bold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 flex items-center justify-center space-x-2"
             >
               {loading ? (
-                <div className="flex items-center justify-center">
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Analyzing...
-                </div>
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  <span>Analyzing...</span>
+                </>
               ) : (
                 "Find My Character"
               )}
-            </button>
+            </motion.button>
 
             {error && (
-              <div className="bg-red-500/20 border border-red-500 text-red-300 p-3 rounded-lg">
+              <motion.div 
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-red-500/20 border border-red-500 text-red-300 p-4 rounded-xl text-center"
+              >
                 {error}
-              </div>
+              </motion.div>
             )}
 
             {result && (
-              <div className="bg-zinc-900 border border-zinc-700 p-5 rounded-lg space-y-3">
-                <h3 className="text-xl font-semibold text-blue-400">Result</h3>
-                <p><span className="text-zinc-400">Username:</span> {result.name}</p>
-                <p><span className="text-zinc-400">Blue Lock Character:</span> {result.character}</p>
-                <div>
-                  <p className="text-zinc-400">Why {result.character}?</p>
-                  <p className="text-zinc-500 italic">{result.explanation}</p>
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-blue-900/30 border border-blue-700/50 p-6 rounded-xl space-y-4"
+              >
+                <h3 className="text-2xl font-bold text-blue-400 flex items-center space-x-2">
+                  <Star className="text-yellow-400" />
+                  <span>Your Result</span>
+                </h3>
+                <div className="space-y-2">
+                  <p className="flex items-center space-x-2">
+                    <UserCheck className="text-green-500" />
+                    <span className="text-zinc-300">Username:</span>
+                    <span className="font-semibold text-white">{result.name}</span>
+                  </p>
+                  <p className="flex items-center space-x-2">
+                    <Sparkles className="text-purple-500" />
+                    <span className="text-zinc-300">Blue Lock Character:</span>
+                    <span className="font-semibold text-white">{result.character}</span>
+                  </p>
                 </div>
-              </div>
+                <div>
+                  <p className="text-zinc-300 mb-2">Why {result.character}?</p>
+                  <p className="text-zinc-400 italic bg-blue-900/50 p-3 rounded-lg">
+                    {result.explanation}
+                  </p>
+                </div>
+              </motion.div>
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

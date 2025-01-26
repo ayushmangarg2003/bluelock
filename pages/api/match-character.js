@@ -11,7 +11,6 @@ export default async function handler(req, res) {
   const appId = "1a801141-77aa-41ab-b11b-ac6fe5069f33";
 
   try {
-    // Start the API request and handle the stream
     const r = await fetch(
       `https://app.wordware.ai/api/released-app/${appId}/run`,
       {
@@ -24,7 +23,7 @@ export default async function handler(req, res) {
           inputs: {
             "Twitter Handle": username,
           },
-          version: "^1.2",
+          version: "^1.3",
         }),
       }
     );
@@ -52,13 +51,11 @@ export default async function handler(req, res) {
         for (let i = 0; i < chunk.length; i++) {
           const isChunkSeparator = chunk[i] === "\n";
 
-          // Keep buffering unless we've hit the end of a data chunk
           if (!isChunkSeparator) {
             buffer.push(chunk[i]);
             continue;
           }
 
-          // Process the completed chunk
           const line = buffer.join("").trimEnd();
 
           try {
@@ -79,7 +76,6 @@ export default async function handler(req, res) {
       reader.releaseLock();
     }
 
-    // Return the streamed result
     res.status(200).json({ result });
   } catch (error) {
     console.error("API error:", error);

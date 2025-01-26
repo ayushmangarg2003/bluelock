@@ -67,8 +67,6 @@ export default async function handler(req, res) {
 
             if (value.type === "chunk") {
               result += value.value ?? "";
-            } else if (value.type === "outputs") {
-              console.log("Final outputs:", value);
             }
           } catch (parseError) {
             console.error("Error parsing chunk:", line);

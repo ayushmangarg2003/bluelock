@@ -23,7 +23,7 @@ export default async function handler(req, res) {
           inputs: {
             "Twitter Handle": username,
           },
-          version: "^1.4",
+          version: "^1.3",
         }),
       }
     );
